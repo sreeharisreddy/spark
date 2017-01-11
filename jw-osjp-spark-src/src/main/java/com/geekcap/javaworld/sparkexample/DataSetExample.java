@@ -8,18 +8,23 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
-import org.apache.spark.sql.SQLContext;
-
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SparkSession;
+import static org.apache.spark.sql.functions.col;
 
 public class DataSetExample {
 	
 	public static void main(String[] args) throws Exception {
 		
 		JavaSparkContext sc = new JavaSparkContext(new SparkConf().setAppName("DataSetExample").setMaster("local"));
-		SQLContext sqlContext = new SQLContext(sc);
+		SparkSession spark = SparkSession
+				  .builder()
+				  .appName("Java Spark SQL basic example")
+				  .config("spark.some.config.option", "some-value")
+				  .getOrCreate();
 		List data = getEmployees();
-		Dataset dataset = sqlContext.createDataset(data, Encoders.bean(Employee.class));
-		Dataset filter = dataset.filter("age > 100");
+		Dataset<Row> dataset =  spark.createDataset(data, Encoders.bean(Employee.class));
+		Dataset<Row> filter = dataset.filter(col("age").gt(20));
 		filter.show();
 }
 
