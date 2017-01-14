@@ -1,5 +1,6 @@
 package com.geekcap.javaworld.sparkexample;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +17,11 @@ import com.google.common.base.Optional;
 
 import scala.Tuple2;
 
-public class ExampleJob {
+public class ExampleJob implements Serializable {
 
 	JavaSparkContext sc;
 	
-	PairFunction<Tuple2<Integer,Optional<String>>,Integer,String> PAIR_FUCTION = new PairFunction<Tuple2<Integer,Optional<String>>,Integer,String>() {
+	static PairFunction<Tuple2<Integer,Optional<String>>,Integer,String> PAIR_FUCTION = new PairFunction<Tuple2<Integer,Optional<String>>,Integer,String>() {
 
 		@Override
 		public Tuple2<Integer, String> call(Tuple2<Integer, Optional<String>> a) throws Exception {
@@ -36,8 +37,8 @@ public class ExampleJob {
 		
 		JavaSparkContext jsc = new JavaSparkContext(new SparkConf().setAppName("SparkJoins").setMaster("local"));
 		ExampleJob exampleJob = new ExampleJob(jsc);
-		String users_path = "/sparkdata/users.txt";
-		String transactions_path = "/sparkdata/transactions.txt";
+		String users_path = "hdfs://sparkdata/users.txt";
+		String transactions_path = "hdfs://sparkdata/transactions.txt";
 		JavaPairRDD<String, String> outpud_rdd = exampleJob.run(transactions_path,users_path);
 		outpud_rdd.saveAsHadoopFile("/sparkdata/users_transactions_output", String.class, String.class, TextOutputFormat.class);
 	}
