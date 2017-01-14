@@ -8,6 +8,7 @@ additional elements via the plugin mechanism, or if code must really be
 added to the main classpath, add jars to lib/ (unsupported).
 EOF
     exit 1
+	
 fi
 
 ES_CLASSPATH="$ES_HOME/lib/elasticsearch-2.4.1.jar:$ES_HOME/lib/*"
