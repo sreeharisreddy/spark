@@ -90,12 +90,6 @@ public class WordCount
 
     public static void main( String[] args )
     {
-        if( args.length == 0 )
-        {
-            System.out.println( "Usage: WordCount <file>" );
-            System.exit( 0 );
-        }
-
-        wordCountJava8( args[ 0 ] );
+        wordCountJava8("C:\\Users\\sreeharis\\git\\spark\\jw-osjp-spark-src\\src\\main\\java\\com\\geekcap\\javaworld\\sparkexample\\Person.java");
     }
 }

@@ -6,9 +6,11 @@ import java.util.List;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.network.protocol.Encoders;
+import org.apache.spark.sql.DataFrame;
 import org.apache.spark.sql.Dataset;
-import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SQLContext;
+import org.apache.spark.sql.functions;
 
 
 public class DataSetExample {
@@ -21,6 +23,7 @@ public class DataSetExample {
 		Dataset dataset = sqlContext.createDataset(data, Encoders.bean(Employee.class));
 		Dataset filter = dataset.filter("age > 100");
 		filter.show();
+		DataFrame as = sqlContext.read().json("employees").withColumn("value", functions.lit(null)).as("people");
 }
 
 	private static List<Employee> getEmployees() {
